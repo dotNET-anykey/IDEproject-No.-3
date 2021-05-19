@@ -15,6 +15,11 @@ namespace IDEproject_No._3
         public int ExamMark { get; set; }
         public double Final_points { get; set; }
 
+        public Student()
+        {
+
+        }
+
         public Student(string name, string surname)
         {
             Name = name;
