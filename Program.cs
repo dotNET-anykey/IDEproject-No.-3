@@ -12,43 +12,7 @@ namespace IDEproject_No._3
         {
             var exit = "";
             var students = new List<Student>();
-            var data = File.ReadLines(@"students.txt").Skip(1).Select(line => line.Split(';').Take(3).ToArray()).ToList();
-
-            foreach (var VARIABLE in data)
-            {
-                foreach (var VARIABLE2 in VARIABLE)
-                {
-                    var student = new Student();
-                    var studentData = VARIABLE2.Split(" ");
-                    var hwMarksSize = studentData.Length - 3;
-                    var hwMarksIndex = 0;
-                    student.HwMarks = new int[hwMarksSize];
-                    for (int i = 0; i < studentData.Length; i++)
-                    {
-
-                        if (i == 0)
-                        {
-                            student.Surname = studentData[i];
-                        }
-                        else if (i == 1)
-                        {
-                            student.Name = studentData[i];
-                        }
-                        else if(i == studentData.Length - 1)
-                        {
-                            student.ExamMark = Convert.ToInt32(studentData[^1]);
-                        }
-                        else
-                        {
-                            student.HwMarks[hwMarksIndex] = Convert.ToInt32(studentData[i]);
-                            hwMarksIndex++;
-                        }
-                    }
-                    students.Add(student);
-                }
-
-            }
-
+            
             do
             {
                 string input = null;
@@ -77,7 +41,7 @@ namespace IDEproject_No._3
                     input = Console.ReadLine();
                     if (input == null) continue;
 
-                    if (IsDigitsOnly(input.Split(" ")) && MarkCheck(Array.ConvertAll(input.Split(" "), int.Parse)))
+                    if (InputCheck.IsDigitsOnly(input.Split(" ")) && InputCheck.MarkCheck(Array.ConvertAll(input.Split(" "), int.Parse)))
                     {
                         student.HwMarks = Array.ConvertAll(input.Split(" "), int.Parse);
                         student.HwMarksList = input.Split(" ").Select(int.Parse).ToList();
@@ -93,7 +57,7 @@ namespace IDEproject_No._3
                     input = Console.ReadLine();
                     if (input != null)
                     {
-                        if (IsDigitsOnly(input.Split(" ")) && MarkCheck(int.Parse(input)))
+                        if (InputCheck.IsDigitsOnly(input.Split(" ")) && InputCheck.MarkCheck(int.Parse(input)))
                         {
                             student.ExamMark = int.Parse(input);
                         }
@@ -102,7 +66,8 @@ namespace IDEproject_No._3
                     }
                 } while (input == null);
                 students.Add(student);
-                students.Sort((x, y) => string.Compare(x.Surname, y.Surname, StringComparison.Ordinal));
+                var mergedStudents = students.Union(StudentsDataFromFile.GetStudents()).ToList();
+                mergedStudents.Sort((x, y) => string.Compare(x.Surname, y.Surname, StringComparison.Ordinal));
 
                 bool calculation = true;
 
@@ -132,7 +97,7 @@ namespace IDEproject_No._3
                 if (calculation)
                 {
                     headerEnd = "Name               Final Points(Avg.)";
-                    foreach (var VARIABLE in students)
+                    foreach (var VARIABLE in mergedStudents)
                     {
                         VARIABLE.CalculateAvarage();
                     }
@@ -140,7 +105,7 @@ namespace IDEproject_No._3
                 else
                 {
                     headerEnd = "Name               Final Points(Med.)";
-                    foreach (var VARIABLE in students)
+                    foreach (var VARIABLE in mergedStudents)
                     {
                         VARIABLE.CalculateMedian();
                     }
@@ -155,7 +120,7 @@ namespace IDEproject_No._3
                 Console.Clear();
                 Console.WriteLine(header + headerEnd);
                 Console.WriteLine(header2);
-                foreach (var varStudent in students)
+                foreach (var varStudent in mergedStudents)
                 {
                     string output = varStudent.Surname;
                     for (int i = 0; i < header.Length - varStudent.Surname.Length; i++)
@@ -184,41 +149,6 @@ namespace IDEproject_No._3
                     exit = input.ToUpper();
                 }
             } while (exit != "EXIT");
-        }
-
-        static bool IsDigitsOnly(string[] str)
-        {
-            foreach (var variable in str)
-            {
-                foreach (char c in variable)
-                {
-                    if (c < '0' || c > '9')
-                        return false;
-                }
-            }
-
-            return true;
-        }
-
-        static bool MarkCheck(int[] homeworkMarks)
-        {
-            foreach (var homeworkMark in homeworkMarks)
-            {
-                if (homeworkMark < 1 || homeworkMark > 10)
-                    return false;
-            }
-
-            return true;
-        }
-
-        static bool MarkCheck(int examMark)
-        {
-            if (examMark < 1 || examMark > 10)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
