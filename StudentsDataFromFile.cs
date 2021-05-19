@@ -64,7 +64,8 @@ namespace IDEproject_No._3
             return students;
         }
 
-        public static void WriteStudentDataToFile(List<Student> students)
+
+        public static void WriteStudentDataToFile(IEnumerable<Student> students)
         {
             foreach (var VARIABLE in students)
             {

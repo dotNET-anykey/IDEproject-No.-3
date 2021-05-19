@@ -52,12 +52,19 @@ namespace IDEproject_No._3
             var size = sortedPNumbers.Length;
             var mid = size / 2;
             Final_points = size % 2 != 0 ? sortedPNumbers[mid] : (sortedPNumbers[mid] + sortedPNumbers[mid - 1]) / 2;
+            RoundFinal();
         }
 
         public void CalculateAvarage()
         {
             var avg = HwMarks.AsQueryable().Average();
             Final_points = 0.3 * avg + 0.7 * ExamMark;
+            RoundFinal();
+        }
+
+        public void RoundFinal()
+        {
+            Final_points = Math.Truncate(Final_points * 100) / 100;
         }
     }
 }
