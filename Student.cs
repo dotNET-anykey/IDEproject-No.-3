@@ -20,12 +20,13 @@ namespace IDEproject_No._3
 
         }
 
-        public Student(string name, string surname)
+        public Student(int index)
         {
-            Name = name;
-            Surname = surname;
+            Name = "Name" + index;
+            Surname = "Surname" + index;
+
             var randNum = new Random();
-            HwMarks = new int[randNum.Next(0, 10)];
+            HwMarks = new int[randNum.Next(5, 8)];
 
             for (int i = 0; i < HwMarks.Length; i++)
             {
@@ -33,6 +34,14 @@ namespace IDEproject_No._3
             }
 
             ExamMark = randNum.Next(1, 10);
+
+            CalculateAvarage();
+        }
+
+        public Student(string name, string surname)
+        {
+            Name = name;
+            Surname = surname;
         }
 
         public void CalculateMedian()

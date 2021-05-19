@@ -63,5 +63,36 @@ namespace IDEproject_No._3
 
             return students;
         }
+
+        public static void WriteStudentDataToFile(List<Student> students)
+        {
+            foreach (var VARIABLE in students)
+            {
+                if (VARIABLE.Final_points > 5)
+                {
+                    string output = VARIABLE.Name + " " + VARIABLE.Surname + " ";
+                    foreach (var VARIABLE2 in VARIABLE.HwMarks)
+                    {
+                        output += VARIABLE2 + " ";
+                    }
+
+                    output += VARIABLE.Final_points;
+
+                    File.AppendAllText("Passed.txt", output + Environment.NewLine);
+                }
+                else
+                {
+                    string output = VARIABLE.Name + " " + VARIABLE.Surname + " ";
+                    foreach (var VARIABLE2 in VARIABLE.HwMarks)
+                    {
+                        output += VARIABLE2 + " ";
+                    }
+
+                    output += $"{VARIABLE.Final_points:0.00}";
+
+                    File.AppendAllText("Failed.txt", output + Environment.NewLine);
+                }
+            }
+        }
     }
 }
